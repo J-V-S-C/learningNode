@@ -33,12 +33,15 @@ server.post(
 
 server.put(
   '/videos/:id',
-  (request: FastifyRequest<{ Body: Video; Params: { id: number } }>, reply) => {
+  async (
+    request: FastifyRequest<{ Body: Video; Params: { id: number } }>,
+    reply,
+  ) => {
     const { title, description, duration } = request.body;
 
     const videoId = request.params.id;
 
-    database.update(videoId, {
+    await database.update(videoId, {
       title,
       description,
       duration,
@@ -49,9 +52,12 @@ server.put(
 
 server.delete(
   '/videos/:id',
-  (request: FastifyRequest<{ Body: Video; Params: { id: number } }>, reply) => {
+  async (
+    request: FastifyRequest<{ Body: Video; Params: { id: number } }>,
+    reply,
+  ) => {
     const videoID = request.params.id;
-    database.delete(videoID);
+    await database.delete(videoID);
 
     return reply.status(204).send();
   },

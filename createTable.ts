@@ -1,8 +1,8 @@
 import sql from './db';
 
-sql`DROP TABLE IF EXISTS videos;`.then(() => {
-  console.log('tabela excluida');
-});
+//sql`DROP TABLE IF EXISTS videos;`.then(() => {
+//  console.log('tabela excluida');
+//});
 
 sql`CREATE TABLE videos (
     id SERIAL PRIMARY KEY,

@@ -10,7 +10,13 @@ export class databasePostgres {
   #videos = new Map();
 
   async list(search: string = '') {
-    const videos = await sql`select * from videos;`;
+    let videos;
+    if (search) {
+      videos = await sql`SELECT * FROM videos WHERE title = ${search}`;
+    } else {
+      videos = await sql`select * from videos;`;
+    }
+    return videos;
   }
 
   async create(video: Video) {
@@ -19,10 +25,13 @@ export class databasePostgres {
   }
 
   async update(id: number, video: Video) {
-    const videos = await sql`select * from videos()`;
+    const { title, description, duration } = video;
+    const result =
+      await sql`UPDATE videos SET title = ${title}, description = ${description}, duration = ${duration} WHERE id = ${id} RETURNING *;`;
+    return result.length > 0 ? result[0] : null;
   }
 
-  delete(id: number): void {
-    const videos = sql`select * from videos`;
+  async delete(id: number) {
+    await sql`delete from videos where id = ${id}`;
   }
 }
